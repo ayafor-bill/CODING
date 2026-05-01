@@ -1,0 +1,19 @@
+DETAB: Exercise 1-20: Replace tabs in input with the proper number of blank spaces to the next tab stop
+- Assume a fixed set of tab stops (N = TAB_STOP = 10)
+- After every N(symbolic Parameter)
+
+ENTAB: Exercise 1-21: Replace Strings of blanks by the minimum number of tabs and blanks to achieve the same spacing
+
+checking horizontal position: col
+tracking spaces: spaces
+
+FOLDLINES: Exercise 1-22: Fold long input lines into two or more shorter lines after the last non-blank character that occurs before the n-th column of the input
+Variables: column_limit, buffer, last_col
+
+COMMENT REMOVER: Exercise 1-23: Remove all comments from a C program
+
+- Enter C Program Code
+- Track each line
+- Check for comments('//','/* */' tracking for every line)
+- Remove all characters after and within comment flag including it
+- Print the program out without the comments
