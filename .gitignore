@@ -1,3 +1,5 @@
-./vscode
+# Ignore Visual Studio Code settings folder
+.vscode/
 
+# Ignore git ignore file itself
 .gitignore
