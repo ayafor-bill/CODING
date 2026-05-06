@@ -12,7 +12,7 @@ int main(){
         if(c == ' '){
             putchar(c);
             space++;
-            col++
+            col++;
                 if(col % space == 0){
                     putchar('\t');
                     space = 0;
@@ -26,11 +26,11 @@ int main(){
             putchar(c);
             col++;
 
-            if(c = '\n'){
+            if(c == '\n'){
                 col = 0;
             }
         }
     }
     return 0;
 }
-*/
+
