@@ -1,23 +1,48 @@
-### About the vpndatadec.py
+# vpndatadec.py
 
-## Why did I try to build this?
+## Overview
 
-- This program was made from an attempt to decode vpn files and figure out their payloads.
+`vpndatadec.py` is a small analysis script designed to decode VPN package files and extract readable payload content. The script attempts a simple Base64 decode of the input file, preserves the decoded binary output, and collects ASCII strings that can reveal embedded configuration, URLs, or other useful data.
 
-## What i though while building this
+## Purpose
 
-- The idea behing making this program to find the payload embedded in the file, so i would be able to use it to make my own files bypassing the time limit put while using the VPN.
+This project was born from an attempt to reverse engineer VPN files and understand their internal payloads. The goal is to inspect what is embedded inside a `.hat` VPN file so you can later analyze or modify the payload and better understand how the VPN package works.
 
-## How the program should work
+## What it does
 
-- Takes in the vpn file.
-- Runs it through the decoding algorithm.
-- Oututs whatever useful ASCII in a *.txt* file and other data into a bin file.
+- Reads a VPN file as raw binary data.
+- Tries to decode that data using Base64.
+- Writes the decoded output to `decoded.bin`.
+- Extracts readable ASCII strings from the decoded data.
+- Saves those strings to `strings.txt`.
 
-_Further analysis of both files can be done using other tools_
+## Why this approach
 
+Many VPN payload files include encoded or packed data. A simple Base64 decode is a common first step when investigating unknown binary files. Extracting printable ASCII strings afterward helps identify meaningful text fragments such as URLs, commands, headers, or protocol markers.
 
-Abeg🙏: While it is still in developments contribution from the community would be of much help. Thank you.
+## Usage
 
+1. Place the VPN file in the same directory as `vpndatadec.py`.
+2. Run the script with Python:
 
-_Bill_
+```bash
+python vpndatadec.py
+```
+
+1. The script creates two output files:
+
+- `decoded.bin` — raw decoded binary output (or the original bytes if decoding fails)
+- `strings.txt` — readable ASCII strings extracted from the binary
+
+## Notes
+
+- The script currently only performs Base64 decoding and ASCII string extraction.
+- Additional analysis can be done with other reverse-engineering tools on `decoded.bin` and `strings.txt`.
+
+## Development
+
+This project is still in development, and community contributions are welcome. If you have ideas for better decoding methods or additional file handling, feel free to improve the script.
+
+__Bill_
+
+---
