@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX_COURSES 20  // Define a reasonable maximum
+
+
 int main() {
     int NoC;
     
@@ -13,9 +16,9 @@ int main() {
         
     //Get Courses, Course credit and score
         
-   char courses[NoC][30];
-   float score[NoC];
-   int credit[NoC];
+   char courses[MAX_COURSES][30];
+   float score[MAX_COURSES];
+   int credit[MAX_COURSES];
    int colmn = 30;  
         
         if(NoC > 0){

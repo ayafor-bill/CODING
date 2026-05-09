@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main(){
-        int A[], num, i;
+        int A[20], num, i;
         
         for(i = 0; i <= 100; i++){
                 A[i];
