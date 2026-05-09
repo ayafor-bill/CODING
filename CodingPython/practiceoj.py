@@ -1,3 +1,12 @@
+# README
+# This script contains practice code written while studying Python from a book.
+# It demonstrates basic class definitions and instance usage for three examples:
+#   1) Dog class with methods to sit and roll over
+#   2) Restaurant class with methods to describe the restaurant and open it
+#   3) User class with methods to describe and greet a user
+#
+# Running this script will create sample objects for each class and print their outputs.
+
 class Dog:
     """This is a dog"""
 
