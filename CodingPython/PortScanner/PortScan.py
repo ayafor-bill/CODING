@@ -1,15 +1,14 @@
-from scapy.all import *
+from scapy.all import sr1, IP, TCP, UDP, DNS, DNSQR
 import ipaddress
 
-# What scapy does? It breaks the pakcet into layers and makes it easy to access the various packet fields at each layer
+# What scapy does? It breaks the packet into layers and makes it easy to access the various packet fields at each layer
 # Layers in scapy are specified as classes
 
-ports = [21,25,53,433,455,8080,8443]
+ports = [21, 25, 53, 443, 455, 8080, 8443]
 
-#SYN Scanning Function
-        # Initializing the IP and TCP Layers of the packet
-        # sr stands for send/receive
-        # answered syn packets are stored in ans while unanswered are stored in unans
+# SYN scanning function
+# Initializing the IP and TCP Layers of the packet
+# sr1 stands for send/receive one packet
 def SynScan(host):
     ans,unans = sr(
         IP(dst=host)/
